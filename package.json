@@ -1,0 +1,31 @@
+{
+  "name": "web_cluster",
+  "version": "1.0.0",
+  "description": "test web performance using nodejs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -e js,ejs,css app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjgjwmertens/RpiWebCluster.git"
+  },
+  "author": "G.J. Mertens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gjgjwmertens/RpiWebCluster/issues"
+  },
+  "homepage": "https://github.com/gjgjwmertens/RpiWebCluser#readme",
+  "dependencies": {
+    "oled-font-5x7": "^1.0.0",
+    "oled-js-pi": "^1.0.5",
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "nodemon": "^1.11.0",
+    "reload": "^1.1.0",
+    "socket.io": "^1.7.0"
+  }
+}

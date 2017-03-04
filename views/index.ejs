@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <% include templates/head.ejs %>
+   </head>
+
+   <body id="<%= pageID %>">
+      <% include templates/nav.ejs %>
+      <div class="container">
+         <h1>Rpi Web Cluster</h1>
+      </div>
+   </body>
+
+   <% include templates/script.ejs %>
+   <script>
+      console.log('JQuery: ' + $().jquery);
+   </script>
+
+</html>
