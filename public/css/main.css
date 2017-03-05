@@ -1,5 +1,5 @@
 body {
-   margin-top: 60px;
+   margin-top: 70px;
    background-color: antiquewhite;
 }
 
@@ -25,6 +25,10 @@ body {
 
 .websocket-connected button {
    visibility: visible;
+}
+
+.websocket-not-connected button {
+   visibility: hidden;
 }
 
 .websocket-connected #websocket_conn_status_field_id::after {

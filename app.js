@@ -12,6 +12,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 
 app.use(require('./routes/index'));
+app.use(require('./routes/api'));
 app.use('/jquery', express.static('./node_modules/jquery/dist'));
 app.use(express.static('./public'));
 
@@ -32,3 +33,9 @@ wss.on('connection', function (ws) {
       }
    })
 });
+
+// setInterval(function() {
+//    wss.clients.forEach(function (ws, index, list) {
+//       ws.send('time: ' + new Date());
+//    })
+// }, 5000);

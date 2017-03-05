@@ -8,10 +8,14 @@
       <% include templates/nav.ejs %>
       <div class="container">
          <h1>Rpi Web Cluster</h1>
+         <button id="test_api_btn_id"
+         class="btn btn-outline-success">Test</button>
       </div>
+      <div id="command_feedback_field_id">Test</div>
    </body>
 
    <% include templates/script.ejs %>
+   <script src="js/index.js"></script>
    <script>
       console.log('JQuery: ' + $().jquery);
    </script>
