@@ -33,6 +33,6 @@ router.post('/api', function (req, res) {
       default:
          res.json({msg: 'Unknown command'});
    }
-})
+});
 
 module.exports = router;
