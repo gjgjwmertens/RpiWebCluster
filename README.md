@@ -15,3 +15,32 @@ MySQL Server
    - change bind-address to 0.0.0.0
    - sudo service mysql restart
 - npm install mysql --save
+- query insert result
+   - insert into:
+      app.js::checkServerStatus result: OkPacket {
+        fieldCount: 0,
+        affectedRows: 1,
+        insertId: 34,
+        serverStatus: 2,
+        warningCount: 1,
+        message: '',
+        protocol41: true,
+        changedRows: 0 }
+   - select:
+      app.js::checkServerStatus select result: [ RowDataPacket { 'count(*)': 61 } ]
+      app.js::checkServerStatus select fields: [ FieldPacket {
+          catalog: 'def',
+          db: '',
+          table: '',
+          orgTable: '',
+          name: 'count(*)',
+          orgName: '',
+          charsetNr: 63,
+          length: 21,
+          type: 8,
+          flags: 129,
+          decimals: 0,
+          default: undefined,
+          zeroFill: false,
+          protocol41: true } ]
+

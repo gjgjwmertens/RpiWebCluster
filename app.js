@@ -2,6 +2,12 @@
  * Created by G on 4-3-2017.
  */
 
+const DEBUG = true;
+
+if(DEBUG) {
+   var util = require('util');
+}
+
 var express = require('express');
 var reload = require('reload');
 var wss = new require('ws').Server({port: 3030});
@@ -85,18 +91,27 @@ function checkServerStatus(server) {
          serverStatus.server = JSON.parse(chunk);
          serverStatus.lastCheck = new Date();
 
-         db.connect();
          db.query('insert into iis_alive_check values(null,' +
-                  'now(), ' + res.statusCode + ', ' +
-                  serverStatus.server.COMPUTERNAME + ', ' +
-                  serverStatus.server.HOST_ADDR + ', ' +
-                  '"' + chunk + '"', (error, results, fields) => {
+                  'now(), ' + res.statusCode + ', "' +
+                  serverStatus.server.COMPUTERNAME + '", "' +
+                  serverStatus.server.HOST_ADDR + '", ' +
+                  '"' + db.escape(chunk) + '")', (error, results, fields) => {
             if(error) {
-               console.log("app.js::checkServerStatus: MySQL error inserting result");
+               console.log("app.js::checkServerStatus: MySQL error inserting: " + error);
+            } else {
+               console.log('app.js::checkServerStatus result: ' + util.inspect(results, false, null));
+               console.log('app.js::checkServerStatus fields: ' + util.inspect(fields, false, null));
             }
-            console.log('app.js::checkServerStatus result: ' + results[0].solution);
          });
-         db.end();
+
+         db.query('select count(*) from iis_alive_check', (error, results, fields) => {
+            if(error) {
+               console.log("app.js::checkServerStatus: MySQL error select: " + error);
+            } else {
+               console.log('app.js::checkServerStatus select result: ' + util.inspect(results, false, null));
+               console.log('app.js::checkServerStatus select fields: ' + util.inspect(fields, false, null));
+            }
+         });
       });
       res.on('end', () => {
          console.log('app.js::res.onEnd End of response');
