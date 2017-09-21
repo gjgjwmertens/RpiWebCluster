@@ -11,6 +11,7 @@ if(DEBUG) {
 var express = require('express');
 var reload = require('reload');
 var wss = new require('ws').Server({port: 3030});
+var querystring = require('querystring');
 var fs = require('fs');
 var app = express();
 
@@ -24,7 +25,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
    host: 'localhost',
    user: 'pi',
-   password: '13taz666',
+   password: 'taz666',
    database: 'web_cluster_stats'
 });
 
@@ -65,16 +66,85 @@ var oled_options = {
 };
 
 var serverOptions = {
-   hostname: 'webserver7.fmg.uva.nl',
+   hostname: 'az005.fmg.uva.nl',
    port: 80,
-   path: '/php/secure/http_php_alive_check.php',
+   path: '/alive_check/http_php_alive_check.php',
    method: 'GET'
+}
+
+var post_data = querystring.stringify({
+   'security_key' : 'test',
+   'output_format': 'json'
+});
+
+var serverSecureOptions = {
+   hostname: 'az005.fmg.uva.nl',
+   port: 80,
+   path: '/alive_check/https_php_alive_check.php',
+   method: 'POST',
+   headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(post_data)
+   }
 }
 
 var serverStatus = {
    statusCode: 500,
    server: null,
    lastCheck: null
+}
+
+function checkSecureServerStatus(server) {
+   var post_req = http.request(server, (post_res) => {
+      // serverStatus.statusCode = post_res.statusCode;
+      post_res.setEncoding('utf8');
+      post_res.on('data', (chunk) => {
+         console.log(`app.js::post_res.onData Secure Body: ${chunk}`);
+         // console.log(chunk.search('php is working')>0?'Ok':'Error');
+         // console.log(chunk.search(/webserver/i));
+         // var serverId = chunk.substr(chunk.search(/webserver/i));
+         // serverId = serverId.substring(0, serverId.search('</p>'));
+         // serverStatus.server = JSON.parse(chunk);
+         // serverStatus.lastCheck = new Date();
+         // console.log('app.js::post_res.onData ServerStatus: ' + serverStatus);
+
+
+         // db.query('insert into iis_alive_check values(null,' +
+         //          'now(), ' + post_res.statusCode + ', "' +
+         //          serverStatus.server.COMPUTERNAME + '", "' +
+         //          serverStatus.server.LOCAL_ADDR + '", ' +
+         //          '"' + db.escape(chunk) + '")', (error, results, fields) => {
+         //    if(error) {
+         //       console.log("app.js::checkServerStatus: MySQL error inserting: " + error);
+         //    } else {
+         //       // There is useful information in results among affectedRows and insertId
+         //       // console.log('app.js::checkServerStatus result: ' + util.inspect(results, false, null));
+         //       // fields is undefined
+         //       // console.log('app.js::checkServerStatus fields: ' + util.inspect(fields, false, null));
+         //    }
+         // });
+         //
+         // db.query('select count(*) from iis_alive_check', (error, results, fields) => {
+         //    if(error) {
+         //       console.log("app.js::checkServerStatus: MySQL error select: " + error);
+         //    } else {
+         //       // the results hold the result of the select
+         //       // console.log('app.js::checkServerStatus select result: ' + util.inspect(results, false, null));
+         //       // console.log('app.js::checkServerStatus select fields: ' + util.inspect(fields, false, null));
+         //    }
+         // });
+      });
+      post_res.on('end', () => {
+         console.log('app.js::post_res.onEnd End of secure response.');
+      })
+   });
+
+   post_req.on('error', (e) => {
+      console.log(`http_test.js::post_req.onError: ${e.message}`);
+   });
+
+   post_req.write(post_data);
+   post_req.end();
 }
 
 function checkServerStatus(server) {
@@ -87,20 +157,23 @@ function checkServerStatus(server) {
          // console.log(chunk.search(/webserver/i));
          // var serverId = chunk.substr(chunk.search(/webserver/i));
          // serverId = serverId.substring(0, serverId.search('</p>'));
-         // console.log('app.js::onData: ' + serverId);
          serverStatus.server = JSON.parse(chunk);
          serverStatus.lastCheck = new Date();
+         // console.log('app.js::res.onData ServerStatus: ' + serverStatus);
+
 
          db.query('insert into iis_alive_check values(null,' +
                   'now(), ' + res.statusCode + ', "' +
                   serverStatus.server.COMPUTERNAME + '", "' +
-                  serverStatus.server.HOST_ADDR + '", ' +
+                  serverStatus.server.LOCAL_ADDR + '", ' +
                   '"' + db.escape(chunk) + '")', (error, results, fields) => {
             if(error) {
                console.log("app.js::checkServerStatus: MySQL error inserting: " + error);
             } else {
-               console.log('app.js::checkServerStatus result: ' + util.inspect(results, false, null));
-               console.log('app.js::checkServerStatus fields: ' + util.inspect(fields, false, null));
+               // There is useful information in results among affectedRows and insertId
+               // console.log('app.js::checkServerStatus result: ' + util.inspect(results, false, null));
+               // fields is undefined
+               // console.log('app.js::checkServerStatus fields: ' + util.inspect(fields, false, null));
             }
          });
 
@@ -108,13 +181,14 @@ function checkServerStatus(server) {
             if(error) {
                console.log("app.js::checkServerStatus: MySQL error select: " + error);
             } else {
-               console.log('app.js::checkServerStatus select result: ' + util.inspect(results, false, null));
-               console.log('app.js::checkServerStatus select fields: ' + util.inspect(fields, false, null));
+               // the results hold the result of the select
+               // console.log('app.js::checkServerStatus select result: ' + util.inspect(results, false, null));
+               // console.log('app.js::checkServerStatus select fields: ' + util.inspect(fields, false, null));
             }
          });
       });
       res.on('end', () => {
-         console.log('app.js::res.onEnd End of response');
+         // console.log('app.js::res.onEnd End of response.');
       })
    });
 
@@ -125,6 +199,7 @@ function checkServerStatus(server) {
 }
 
 setInterval(() => {checkServerStatus(serverOptions);}, 10000);
+checkSecureServerStatus(serverSecureOptions);
 
 var oled = new oled(oled_options);
 
@@ -139,6 +214,8 @@ setInterval(function() {
          moment().format('dd DD.MM.YYYY   ') + serverStatus.statusCode, 1, false);
       oled.setCursor(1, 24);
       oled.writeString(font, 1, serverStatus.server.LOCAL_ADDR);
+      oled.setCursor(1, 40);
+      oled.writeString(font, 1, serverStatus.server.REMOTE_ADDR);
    } else {
       oled.setCursor(1, 0);
       oled.writeString(font, 1,

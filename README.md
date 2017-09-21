@@ -2,6 +2,23 @@
 
 Test project to compare performance between 8 clustered Raspberry Pi's and a "regular" web server.
 
+First using the rpi's for testing the web farm at work
+
+Rpi_008 is the test server. The code is automatically uploaded to the rpi by phpStorm.
+GitHub: git+https://github.com/gjgjwmertens/RpiWebCluster.git\
+
+The code is committed and pushed from the rpi to github.
+- git status
+- git add . (staging)
+- git commit -am "comment"
+- git push origin master
+
+There is a clone in D:\Projects\Electronica\Projects\RpiWebCluster\Code
+- git pull origin master (get latest version)
+
+The project uses a nodeJS express http server to show a web page and test web sockets. 
+I don't think it is necessary for the purpose of testing the web farm (needs verifying)
+
 MySQL Server
 - sudo apt-get install mysql-server
 - sudo apt-get install mysql-client (maybe not necessary, test)
