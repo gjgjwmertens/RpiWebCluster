@@ -17,7 +17,7 @@ There is a clone in D:\Projects\Electronica\Projects\RpiWebCluster\Code
 - git pull origin master (get latest version)
 
 The project uses a nodeJS express http server to show a web page and test web sockets. 
-I don't think it is necessary for the purpose of testing the web farm (needs verifying)
+I don't think it is necessary for the purpose of testing the web farm (needs verifying, see http_test.js)
 
 MySQL Server
 - sudo apt-get install mysql-server
@@ -61,3 +61,10 @@ MySQL Server
           zeroFill: false,
           protocol41: true } ]
 
+- Running the app at boot time
+   - open a terminal
+      - sudo crontab -e
+      - add the following line to the crontab file
+      - @reboot sudo /usr/bin/node /home/pi/Documents/Projects/RpiWebCluster/app.js
+   - to stop the task run sudo top to see the PID of the node task
+   - then kill PID

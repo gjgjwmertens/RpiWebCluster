@@ -14,11 +14,11 @@ var http_options = {
 console.log('start http test');
 
 var req = http.request(http_options, (res) => {
-   console.log(`app.js::http.request: Server Status: ${res.statusCode}`);
-   console.log(`app.js::http.request: Headers: ${JSON.stringify(res.headers)}`);
+   console.log(`http_test.js::http.request: Server Status: ${res.statusCode}`);
+   console.log(`http_test.js::http.request: Headers: ${JSON.stringify(res.headers)}`);
    res.setEncoding('utf8');
    res.on('data', (chunk) => {
-      // console.log(`app.js::res.onData Body: ${chunk}`);
+      console.log(`app.js::res.onData Body: ${chunk}`);
       console.log(chunk.search('php is working')>0?'Ok':'Error');
       // console.log(chunk.search(/webserver/i));
       var serverId = chunk.substr(chunk.search(/webserver/i));
