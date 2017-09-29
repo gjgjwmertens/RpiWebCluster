@@ -2,16 +2,46 @@
 <html>
    <head>
       <% include templates/head.ejs %>
+      <link href="css/index.css" rel="stylesheet">
    </head>
 
    <body id="<%= pageID %>">
       <% include templates/nav.ejs %>
       <div class="container">
-         <h1>Rpi Web Cluster</h1>
-         <button id="test_api_btn_id"
-         class="btn btn-outline-success">Test</button>
+         <div class="row">
+            <div class="col-sm-6">
+               <h1>Rpi Web Cluster</h1>
+               <div class="container">
+                  <div class="row">
+                     <button id="server_test_api_btn_id" data-api-cmd="serverTest"
+                     class="btn btn-outline-primary api-btn">ServerTest</button>
+                     <button id="run_server_test_api_btn_id" data-api-cmd="runServerTest"
+                     class="btn btn-outline-success api-btn">Run</button>
+                     <button id="stop_server_test_api_btn_id" data-api-cmd="stopServerTest"
+                     class="btn btn-outline-danger api-btn">Stop</button>
+                  </div>
+                  <div class="row row_top_spacer">
+                     <button id="oled_api_btn_id" data-api-cmd="oledTest"
+                     class="btn btn-outline-primary api-btn">Oled</button>
+                     <button id="run_oled_api_btn_id" data-api-cmd="runOled"
+                     class="btn btn-outline-success api-btn">Run</button>
+                     <button id="stop_oled_api_btn_id" data-api-cmd="stopOled"
+                     class="btn btn-outline-danger api-btn">Stop</button>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-6">
+               <pre
+                 class="pre-scrollable"
+                 id="websocket_message_container_id"><code id="websocket_message_field_id"></code></pre>
+            </div>
+         </div>
       </div>
-      <div id="command_feedback_field_id">Test</div>
+      <footer class="footer">
+         <div class="container">
+            <span id="command_feedback_field_id" class="text-muted">Status bar</span>
+         </div>
+      </footer>
    </body>
 
    <% include templates/script.ejs %>

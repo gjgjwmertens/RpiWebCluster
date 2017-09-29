@@ -5,6 +5,15 @@
 // Basic websocket code
 var ws = new WebSocket('ws://20.0.0.108:3030');
 
+function processWsMessage(data) {
+   $('#websocket_message_field_id').append(data);
+   $('#websocket_message_container_id').animate(
+      {scrollTop: (
+         $('#websocket_message_container_id')[0].scrollHeight -
+         $('#websocket_message_container_id')[0].clientHeight
+      )}, 1000);
+}
+
 ws.onopen = function () {
    $('#websocket_conn_status_container_id').removeClass('websocket-not-connected');
    $('#websocket_conn_status_container_id').addClass('websocket-connected');
@@ -24,9 +33,10 @@ ws.onmessage = function (payload) {
    }
    // console.log(typeof data);
    if (typeof data === 'object') {
-      // updateStatus(data);
+      processWsObject(data);
       console.log('index.js::ws.onmessage:object: ' + data);
    } else {
+      processWsMessage(data);
       console.log('index.js::ws.onmessage: ' + data);
    }
 };
@@ -38,12 +48,13 @@ $(function () {
       ws.send('exit');
    });
 
-   $('#test_api_btn_id').on('click', function (e) {
+   $('.api-btn').on('click', e => {
+      // console.log($(e.target).data('api-cmd'));
       $.post('api', {
-         command: 'test',
+         command: $(e.target).data('api-cmd'),
          value: 150
       }, updateCommandFeedback);
-   });
+   })
 
 });
 
