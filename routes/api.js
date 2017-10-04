@@ -1,17 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var runIntVal = null;
-var wss = null;
+let express = require('express');
+let st = require('../lib/server-test');
+let bodyParser = require('body-parser');
+let router = express.Router();
+let runIntVal = null;
+let serverList = [
+   'AZ005.fmg.uva.nl',
+   'AZ005.fmg.uva.nl'
+];
 
-function runServerTest() {
-   var t = new Date();
-   var tString = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds() + ':' + t.getMilliseconds();
-   console.log(tString + ' Running Server test');
-   wss.clients.forEach(function each(client) {
-      client.send('\n' + tString + ' Running Server test');
-   });
-}
+async function rst(srv) {
+   await st.runServerTest('AZ005.fmg.uva.nl');
+};
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: false}));
@@ -35,17 +34,22 @@ router.get('/api/:item_id/:new_value', function (req, res) {
 });
 
 router.post('/api', function (req, res) {
-   var input = req.body;
-   if(!wss) {
-      wss = req.app.get('wss');
-   }
+   let input = req.body;
+   st.setWebSocketServer(req.app.get('wss'));
 
    switch (input.command) {
       case 'serverTest':
-         res.json({msg: 'Api test ok at: ' + new Date()});
+         let t = Date.now();
+         serverList.forEach((el) => {
+            rst(el).then((r) => {
+               console.log(r);
+            });
+         });
+         t = Date.now() - t;
+         res.json({msg: 'Api test ok at: ' + new Date() + ' Done in ' + t});
          break;
       case 'runServerTest':
-         runIntVal = setInterval(runServerTest, 10000);
+         runIntVal = setInterval(st.runServerTest, 10000);
          res.json({msg: 'Server test started at: ' + new Date()});
          break;
       case 'stopServerTest':

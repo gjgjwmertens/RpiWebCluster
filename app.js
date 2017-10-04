@@ -2,7 +2,7 @@
  * Created by G on 4-3-2017.
  */
 
-const DEBUG = true;
+global.DEBUG = true;
 
 var express = require('express');
 var reload = require('reload');
@@ -36,4 +36,3 @@ wss.on('connection', function (ws) {
       }
    })
 });
-
