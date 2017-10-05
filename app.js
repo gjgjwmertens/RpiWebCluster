@@ -6,13 +6,13 @@ global.DEBUG = true;
 
 var express = require('express');
 var reload = require('reload');
-var wss = new require('ws').Server({port: 3030});
 // var fs = require('fs');
 var app = express();
+var cc = require('./lib/cyber-chat');
 
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
-app.set('wss', wss);
+app.set('cc', cc);
 
 app.use(require('./routes/index'));
 app.use(require('./routes/api'));
@@ -28,11 +28,4 @@ var server = app.listen(app.get('port'), function () {
 
 reload(server, app);
 
-wss.on('connection', function (ws) {
-   ws.send('Welcome to cyber chat3');
-   ws.on('message', function (msg) {
-      if (msg == 'exit') {
-         ws.close();
-      }
-   })
-});
+cc.start();

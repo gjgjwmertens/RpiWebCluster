@@ -1,15 +1,17 @@
 let express = require('express');
-let st = require('../lib/server-test');
 let bodyParser = require('body-parser');
+let st = require('../lib/server-test');
+require('../lib/helpers');
 let router = express.Router();
-let runIntVal = null;
+let runStIntVal = null;
 let serverList = [
    'AZ005.fmg.uva.nl',
-   'AZ005.fmg.uva.nl'
+   'webserver13.fmg.uva.nl'
 ];
 
 async function rst(srv) {
-   await st.runServerTest('AZ005.fmg.uva.nl');
+   let result = await st.runServerTest(srv);
+   return 'Server tested: ' + srv + ' with result: ' +  result;
 };
 
 router.use(bodyParser.json());
@@ -35,21 +37,24 @@ router.get('/api/:item_id/:new_value', function (req, res) {
 
 router.post('/api', function (req, res) {
    let input = req.body;
-   st.setWebSocketServer(req.app.get('wss'));
+   let cc = req.app.get('cc');
 
    switch (input.command) {
       case 'serverTest':
          let t = Date.now();
-         serverList.forEach((el) => {
-            rst(el).then((r) => {
+         serverList.forEach((server) => {
+            cc.send('\n' + new Date().formatedTime() + ' Starting Server test on ' + server);
+            rst(server).then((r) => {
                console.log(r);
+               cc.send('\n' + new Date().formatedTime() + ' Result from server test: ' + r);
             });
+            cc.send('\n' + new Date().formatedTime() + ' Server test on ' + server + ' ended.');
          });
          t = Date.now() - t;
          res.json({msg: 'Api test ok at: ' + new Date() + ' Done in ' + t});
          break;
       case 'runServerTest':
-         runIntVal = setInterval(st.runServerTest, 10000);
+         runStIntVal = setInterval(st.runServerTest, 10000);
          res.json({msg: 'Server test started at: ' + new Date()});
          break;
       case 'stopServerTest':
