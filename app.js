@@ -2,7 +2,7 @@
  * Created by G on 4-3-2017.
  */
 
-global.DEBUG = true;
+global.DEBUG = false;
 
 var express = require('express');
 var reload = require('reload');
@@ -23,7 +23,9 @@ app.use(express.static('./public'));
 app.locals.siteTitle = 'RpiWebCluster'; // Control Systems title
 
 var server = app.listen(app.get('port'), function () {
-   console.log('Rpi_008 listening on port: ' + app.get('port') + '!');
+   if (DEBUG) {
+      console.log('Rpi_008 listening on port: ' + app.get('port') + '!');
+   }
 });
 
 reload(server, app);
