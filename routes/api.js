@@ -45,7 +45,9 @@ router.post('/api', function (req, res) {
          serverList.forEach((server) => {
             cc.send('\n' + new Date().formatedTime() + ' Starting Server test on ' + server);
             rst(server).then((r) => {
-               console.log(r);
+               if (DEBUG) {
+                  console.log(r);
+               }
                cc.send('\n' + new Date().formatedTime() + ' Result from server test: ' + r);
             });
             cc.send('\n' + new Date().formatedTime() + ' Server test on ' + server + ' ended.');
