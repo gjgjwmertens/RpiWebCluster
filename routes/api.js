@@ -7,6 +7,7 @@ let runStIntVal = null;
 let cc = null;
 let serverList = [
    'AZ005.fmg.uva.nl',
+   'webserver12.fmg.uva.nl',
    'webserver13.fmg.uva.nl'
 ];
 
@@ -15,18 +16,23 @@ let serverList = [
 //    return 'Server tested: ' + srv + ' with result: ' +  result;
 // };
 
-function testServers() { // TODO add timing
+function testServers() {
    serverList.forEach((server) => {
       let t = [server, Date.now()];
-      cc.send('\n' + new Date().formatedTime() + ' Starting Server test on ' + server);
+      cc.send('\n' + new Date().formattedTime() + ' Starting test on ' + server);
       st.runServerTest(server).then((r) => {
          if (DEBUG) {
             console.log(r);
          }
-         cc.send('\n' + new Date().formatedTime() + ' Result from server test: ' + r +
-                 ' - ' + t[0] + ' took ' + (Date.now() - t[1]));
+         cc.send('\n' + new Date().formattedTime() +
+                 ' Result from server test: \r\n             ' + r +
+                 '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
+      }, (e) => {
+         cc.send('\n' + new Date().formattedTime() +
+                 ' Result from server test: \r\n             ' + e +
+                 '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
       });
-      cc.send('\n' + new Date().formatedTime() + ' Server test on ' + server + ' ended.');
+      // cc.send('\n' + new Date().formattedTime() + ' Server test on ' + server + ' ended.');
    });
 }
 
