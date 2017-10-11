@@ -17,12 +17,14 @@ let serverList = [
 
 function testServers() { // TODO add timing
    serverList.forEach((server) => {
+      let t = [server, Date.now()];
       cc.send('\n' + new Date().formatedTime() + ' Starting Server test on ' + server);
       st.runServerTest(server).then((r) => {
          if (DEBUG) {
             console.log(r);
          }
-         cc.send('\n' + new Date().formatedTime() + ' Result from server test: ' + r);
+         cc.send('\n' + new Date().formatedTime() + ' Result from server test: ' + r +
+                 ' - ' + t[0] + ' took ' + (Date.now() - t[1]));
       });
       cc.send('\n' + new Date().formatedTime() + ' Server test on ' + server + ' ended.');
    });
