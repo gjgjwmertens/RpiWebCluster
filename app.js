@@ -9,6 +9,7 @@ var reload = require('reload');
 // var fs = require('fs');
 var app = express();
 var cc = require('./lib/cyber-chat');
+let config = require('/home/pi/inc/rpi_cluster.config');
 
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
@@ -21,6 +22,7 @@ app.use(express.static('./public'));
 
 // global vars for the EJS (Embedded JavaScript) framework
 app.locals.siteTitle = 'RpiWebCluster'; // Control Systems title
+app.locals.rpi = config.rpi;
 
 var server = app.listen(app.get('port'), function () {
    if (DEBUG) {
@@ -30,4 +32,4 @@ var server = app.listen(app.get('port'), function () {
 
 reload(server, app);
 
-cc.start();
+cc.start(config.rpi);

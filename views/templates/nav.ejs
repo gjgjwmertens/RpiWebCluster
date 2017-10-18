@@ -11,20 +11,22 @@
          <a class="nav-link" href="/zero">Zero</a>
       </li>
       <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" href="http://example.com" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-         <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+         <a class="nav-link dropdown-toggle" href="#" id="websocket_conn_select_field_id"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">WebSocket</a>
+         <div
+                 id="websocket_conn_dropdown_id"
+                 class="dropdown-menu" aria-labelledby="websocket_conn_select_label_id">
+            <div id="websocket_conn_dropdown_divider_id" class="dropdown-divider"></div>
+            <a id="ws_close_btn_id" class="dropdown-item" href="#">Close Conn Top</a>
+            <a id="ws_close_2_btn_id" class="dropdown-item" href="#">Close Conn Bottom</a>
          </div>
       </li>
    </ul>
    <div id="websocket_conn_status_container_id"
-        class="float-xs-right navbar-nav websocket-not-connected">
+        class="float-xs-right navbar-nav">
       <div  class="nav-link">
-         <span id="websocket_conn_status_field_id"></span>
-         <div id="websocket_status_led_id"></div>
-         <button id="ws_close_btn_id" class="btn btn-outline-success">Close</button>
+         <div id="websocket_status_led_id" class="websocket-status-led websocket-not-connected"></div>
+         <div id="websocket_2_status_led_id" class="websocket-status-led websocket-not-connected"></div>
       </div>
    </div>
 </nav>

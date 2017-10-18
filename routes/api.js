@@ -12,6 +12,7 @@ let cc = null;
 // ];
 let serverList = [
    'AZ005.fmg.uva.nl',
+   'webserver1.fmg.uva.nl',
    'webserver2.fmg.uva.nl',
    'webserver6.fmg.uva.nl',
    'webserver12.fmg.uva.nl',
@@ -118,6 +119,10 @@ router.post('/api', function (req, res) {
          clearInterval(runCtIntVal);
          res.json({msg: 'Server test stopped at: ' + new Date()});
          break;
+      case 'allRpiServerTest':
+         let cmd = {command: 'serverTest'};
+         cc.send(JSON.stringify(cmd));
+         res.json({msg: 'Server test on all Rpi started at: ' + new Date()})
       default:
          res.json({msg: 'Unknown command'});
    }
