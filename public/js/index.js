@@ -17,7 +17,7 @@ var wsList = {
 }
 
 function processWsMessage(data) {
-   $('#websocket_message_field_id').append(data);
+   $('#websocket_message_field_id').append(data + '\r\n');
    $('#websocket_message_container_id').animate(
       {scrollTop: (
          $('#websocket_message_container_id')[0].scrollHeight -
@@ -33,7 +33,7 @@ function processWsObject(obj) {
 }
 
 function processWs2Message(data) {
-   $('#websocket_2_message_field_id').append(data);
+   $('#websocket_2_message_field_id').append(data + '\r\n');
    $('#websocket_2_message_container_id').animate(
       {scrollTop: (
          $('#websocket_2_message_container_id')[0].scrollHeight -
@@ -60,7 +60,8 @@ ws.onmessage = function (payload) {
    }
    // console.log(typeof data);
    if (typeof data === 'object') {
-      processWsObject(data);
+      // processWsObject(data);
+      processWsMessage(data.at + ' Got command: ' + data.command + ' from ' + data.rpi);
       console.log('index.js::ws.onmessage:object: ' + data);
    } else {
       processWsMessage(data);
@@ -87,7 +88,8 @@ function wsOnMessage (payload) {
    }
    // console.log(typeof data);
    if (typeof data === 'object') {
-      processWs2Object(data);
+      // processWs2Object(data);
+      processWs2Message(data.toString());
       console.log('index.js::ws.onmessage:object: ' + data);
    } else {
       processWs2Message(data);

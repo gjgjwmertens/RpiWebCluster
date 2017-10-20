@@ -33,11 +33,11 @@ function testServers() {
          if (DEBUG) {
             console.log(r);
          }
-         cc.send('\n' + new Date().formattedTime() +
+         cc.send(new Date().formattedTime() +
                  ' Result from server test: \r\n             ' + r +
                  '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
       }, (e) => {
-         cc.send('\n' + new Date().formattedTime() +
+         cc.send(new Date().formattedTime() +
                  ' Result from server test: \r\n             ' + e +
                  '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
       });
@@ -48,16 +48,16 @@ function testServers() {
 function testCluster() {
    let server = cluster;
    let t = [server, Date.now()];
-   cc.send('\n' + new Date().formattedTime() + ' Starting test on ' + server);
+   cc.send(new Date().formattedTime() + ' Starting test on ' + server);
    st.runServerTest(server).then((r) => {
       if (DEBUG) {
          console.log(r);
       }
-      cc.send('\n' + new Date().formattedTime() +
+      cc.send(new Date().formattedTime() +
               ' Result from server test: \r\n             ' + r +
               '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
    }, (e) => {
-      cc.send('\n' + new Date().formattedTime() +
+      cc.send(new Date().formattedTime() +
               ' Result from server test: \r\n             ' + e +
               '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
    });
@@ -120,9 +120,14 @@ router.post('/api', function (req, res) {
          res.json({msg: 'Server test stopped at: ' + new Date()});
          break;
       case 'allRpiServerTest':
-         let cmd = {command: 'serverTest'};
+         let cmd = {
+            command: 'serverTest',
+            rpi: req.app.get('rpi'),
+            at: new Date().formattedTime()
+         };
          cc.send(JSON.stringify(cmd));
-         res.json({msg: 'Server test on all Rpi started at: ' + new Date()})
+         res.json({msg: 'Server test on all Rpi started at: ' + new Date()});
+         break;
       default:
          res.json({msg: 'Unknown command'});
    }
