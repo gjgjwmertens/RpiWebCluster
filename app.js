@@ -14,6 +14,10 @@ if(env[0] && (env[0] == 'G')) {
    config = require('/home/pi/inc/rpi_cluster.config');
 }
 
+if(DEBUG) {
+   console.log(config);
+}
+
 var express = require('express');
 var reload = require('reload');
 // var fs = require('fs');
@@ -23,7 +27,6 @@ var cc = require('./lib/cyber-chat');
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 app.set('cc', cc);
-app.set('rpi', config.rpi);
 
 app.use(require('./routes/index'));
 app.use(require('./routes/api'));

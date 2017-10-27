@@ -28,18 +28,21 @@ let cluster = '145.18.151.162';
 function testServers() {
    serverList.forEach((server) => {
       let t = [server, Date.now()];
-      cc.send('\n' + new Date().formattedTime() + ' Starting test on ' + server);
+      cc.send(new Date().formattedTime() + ' ' + config.rpi + ' ***************' +
+              '\n\tStarting testServers on ' + server);
       st.runServerTest(server).then((r) => {
          if (DEBUG) {
             console.log(r);
          }
-         cc.send(new Date().formattedTime() +
-                 ' Result from server test: \r\n             ' + r +
-                 '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
+         cc.send(new Date().formattedTime() + ' ' + config.rpi + ' ***************' +
+                 '\n\tResult from testServers:' +
+                 '\n\t' + r +
+                 '\n\t' + t[0] + ' took ' + (Date.now() - t[1]));
       }, (e) => {
-         cc.send(new Date().formattedTime() +
-                 ' Result from server test: \r\n             ' + e +
-                 '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
+         cc.send(new Date().formattedTime() + ' ' + config.rpi + ' ***************' +
+                 '\n\tError from testServers:' +
+                 '\n\t' + e +
+                 '\n\t' + t[0] + ' took ' + (Date.now() - t[1]));
       });
       // cc.send('\n' + new Date().formattedTime() + ' Server test on ' + server + ' ended.');
    });
@@ -48,18 +51,20 @@ function testServers() {
 function testCluster() {
    let server = cluster;
    let t = [server, Date.now()];
-   cc.send(new Date().formattedTime() + ' Starting test on ' + server);
+   cc.send(new Date().formattedTime() + ' ' + config.rpi + ' starting testCluster on ' + server);
    st.runServerTest(server).then((r) => {
       if (DEBUG) {
          console.log(r);
       }
-      cc.send(new Date().formattedTime() +
-              ' Result from server test: \r\n             ' + r +
-              '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
+      cc.send(new Date().formattedTime() + ' ' + config.rpi + ' ***************' +
+              '\n\tResult from testCluster:' +
+              '\n\t' + r +
+              '\n\t' + t[0] + ' took ' + (Date.now() - t[1]));
    }, (e) => {
-      cc.send(new Date().formattedTime() +
-              ' Result from server test: \r\n             ' + e +
-              '\r\n             ' + t[0] + ' took ' + (Date.now() - t[1]));
+      cc.send(new Date().formattedTime() + ' ' + config.rpi + ' ***************' +
+              '\n\tError from testCluster:' +
+              '\n\t' + e +
+              '\n\t' + t[0] + ' took ' + (Date.now() - t[1]));
    });
    // cc.send('\n' + new Date().formattedTime() + ' Server test on ' + server + ' ended.');
 }
@@ -88,6 +93,11 @@ router.get('/api/:item_id/:new_value', function (req, res) {
 router.post('/api', function (req, res) {
    let input = req.body;
    let t = Date.now();
+   let cmd = {
+      command: 'Unknown',
+      rpi: config.rpi,
+      at: new Date().formattedTime()
+   };
    if (!cc) {
       cc = req.app.get('cc');
    }
@@ -95,42 +105,35 @@ router.post('/api', function (req, res) {
    switch (input.command) {
       case 'serverTest':
          testServers();
-         t = Date.now() - t;
-         res.json({msg: 'Api test ok at: ' + new Date() + ' Done in ' + t});
          break;
       case 'runServerTest':
          runStIntVal = setInterval(testServers, 10000);
-         res.json({msg: 'Server test started at: ' + new Date()});
          break;
       case 'stopServerTest':
          clearInterval(runStIntVal);
-         res.json({msg: 'Server test stopped at: ' + new Date()});
          break;
       case 'clusterTest':
          testCluster();
-         t = Date.now() - t;
-         res.json({msg: 'Api test ok at: ' + new Date() + ' Done in ' + t});
          break;
       case 'runClusterTest':
          runCtIntVal = setInterval(testCluster, 10000);
-         res.json({msg: 'Server test started at: ' + new Date()});
          break;
       case 'stopClusterTest':
          clearInterval(runCtIntVal);
-         res.json({msg: 'Server test stopped at: ' + new Date()});
          break;
       case 'allRpiServerTest':
-         let cmd = {
-            command: 'serverTest',
-            rpi: req.app.get('rpi'),
-            at: new Date().formattedTime()
-         };
+         cmd.command = 'serverTest';
          cc.send(JSON.stringify(cmd));
-         res.json({msg: 'Server test on all Rpi started at: ' + new Date()});
+         break;
+      case 'allRpiClusterTest':
+         cmd.command = 'clusterTest';
+         cc.send(JSON.stringify(cmd));
          break;
       default:
-         res.json({msg: 'Unknown command'});
+         res.json({msg: 'Unknown command: ' + input.command});
+         break;
    }
+   res.json({msg: 'Received ' + input.command + ' at: ' + new Date() + ' Done in ' + (Date.now() - t)});
 });
 
 module.exports = router;

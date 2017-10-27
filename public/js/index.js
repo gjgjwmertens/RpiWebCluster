@@ -61,7 +61,8 @@ ws.onmessage = function (payload) {
    // console.log(typeof data);
    if (typeof data === 'object') {
       // processWsObject(data);
-      processWsMessage(data.at + ' Got command: ' + data.command + ' from ' + data.rpi);
+      processWsMessage(data.at + ' This browser ws client  ***************' +
+                       '\n\tCommand: ' + data.command + ' was send from ' + data.rpi);
       console.log('index.js::ws.onmessage:object: ' + data);
    } else {
       processWsMessage(data);
