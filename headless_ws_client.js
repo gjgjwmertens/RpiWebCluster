@@ -11,7 +11,7 @@ if(env[0] && (env[0] == 'G')) {
    config = require('D:/inc/rpi_cluster.config');
 } else {
    config = require('/home/pi/inc/rpi_cluster.config');
-   // require('./lib/oled');
+   require('./lib/oled');
 }
 let tstMng = require('./lib/test-manager');
 const ws = new WebSocket('ws://20.0.0.108:3030');
