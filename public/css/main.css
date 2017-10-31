@@ -7,7 +7,7 @@ body {
    color: chocolate;
 }
 
-#websocket_status_led_id {
+.websocket-status-led {
    border-radius: 50%;
    width: 10px;
    height: 10px;
@@ -15,34 +15,10 @@ body {
    display: inline-block;
 }
 
-.websocket-connected #websocket_status_led_id {
+.websocket-connected.websocket-status-led {
    background-color: #5cb85c;
 }
 
-.websocket-not-connected #websocket_status_led_id {
+.websocket-not-connected.websocket-status-led {
    background-color: #d9534f;
-}
-
-.websocket-connected button {
-   visibility: visible;
-}
-
-.websocket-not-connected button {
-   visibility: hidden;
-}
-
-.websocket-connected #websocket_conn_status_field_id::after {
-   content: 'Connected';
-   color: #5cb85c;
-   margin-right: 10px;
-}
-
-.websocket-not-connected #websocket_conn_status_field_id::after {
-   content: 'Disconnected';
-   color: #d9534f;
-   margin-right: 10px;
-}
-
-#websocket_conn_status_container_id button {
-   display: none;
 }

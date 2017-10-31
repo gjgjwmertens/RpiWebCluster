@@ -1,8 +1,22 @@
 /**
  * Created by G on 4-3-2017.
  */
+let env = process.argv.slice(2);
 
 global.DEBUG = false;
+global.config = {
+   secret: 'Unknown',
+   rpi: 'Unknown'
+};
+if(env[0] && (env[0] == 'G')) {
+   config = require('D:/inc/rpi_cluster.config');
+} else {
+   config = require('/home/pi/inc/rpi_cluster.config');
+}
+
+if(DEBUG) {
+   console.log(config);
+}
 
 var express = require('express');
 var reload = require('reload');
@@ -21,6 +35,7 @@ app.use(express.static('./public'));
 
 // global vars for the EJS (Embedded JavaScript) framework
 app.locals.siteTitle = 'RpiWebCluster'; // Control Systems title
+app.locals.rpi = config.rpi;
 
 var server = app.listen(app.get('port'), function () {
    if (DEBUG) {
@@ -30,4 +45,4 @@ var server = app.listen(app.get('port'), function () {
 
 reload(server, app);
 
-cc.start();
+cc.start(config.rpi);

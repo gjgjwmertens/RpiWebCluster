@@ -7,7 +7,7 @@
 
    <body id="<%= pageID %>">
       <% include templates/nav.ejs %>
-      <div class="container">
+      <div class="container content">
          <div class="row">
             <div class="col-sm-6">
                <h1>Rpi Web Cluster</h1>
@@ -18,6 +18,30 @@
                      <button id="run_server_test_api_btn_id" data-api-cmd="runServerTest"
                      class="btn btn-outline-success api-btn">Run</button>
                      <button id="stop_server_test_api_btn_id" data-api-cmd="stopServerTest"
+                     class="btn btn-outline-danger api-btn">Stop</button>
+                  </div>
+                  <div class="row row_top_spacer">
+                     <button id="cluster_test_api_btn_id" data-api-cmd="clusterTest"
+                     class="btn btn-outline-primary api-btn">ClusterTest</button>
+                     <button id="run_cluster_test_api_btn_id" data-api-cmd="runClusterTest"
+                     class="btn btn-outline-success api-btn">Run</button>
+                     <button id="stop_cluster_test_api_btn_id" data-api-cmd="stopClusterTest"
+                     class="btn btn-outline-danger api-btn">Stop</button>
+                  </div>
+                  <div class="row row_top_spacer">
+                     <button id="server_test_api_btn_id" data-api-cmd="allRpiServerTest"
+                     class="btn btn-outline-primary api-btn">AllRpiServerTest</button>
+                     <button id="run_server_test_api_btn_id" data-api-cmd="runAllRpiServerTest"
+                     class="btn btn-outline-success api-btn">Run</button>
+                     <button id="stop_server_test_api_btn_id" data-api-cmd="stopAllRpiServerTest"
+                     class="btn btn-outline-danger api-btn">Stop</button>
+                  </div>
+                  <div class="row row_top_spacer">
+                     <button id="cluster_test_api_btn_id" data-api-cmd="allRpiClusterTest"
+                     class="btn btn-outline-primary api-btn">AllRpiClusterTest</button>
+                     <button id="run_cluster_test_api_btn_id" data-api-cmd="runAllRpiClusterTest"
+                     class="btn btn-outline-success api-btn">Run</button>
+                     <button id="stop_cluster_test_api_btn_id" data-api-cmd="stopAllRpiClusterTest"
                      class="btn btn-outline-danger api-btn">Stop</button>
                   </div>
                   <div class="row row_top_spacer">
@@ -34,6 +58,9 @@
                <pre
                  class="pre-scrollable"
                  id="websocket_message_container_id"><code id="websocket_message_field_id"></code></pre>
+               <pre
+                 class="pre-scrollable"
+                 id="websocket_2_message_container_id"><code id="websocket_2_message_field_id"></code></pre>
             </div>
          </div>
       </div>
@@ -45,9 +72,11 @@
    </body>
 
    <% include templates/script.ejs %>
-   <script src="js/index.js"></script>
    <script>
+      let rpi = '<%= rpi %>';
       console.log('JQuery: ' + $().jquery);
+      console.log('Rpi: <%= rpi %>');
    </script>
+   <script src="js/index.js"></script>
 
 </html>
