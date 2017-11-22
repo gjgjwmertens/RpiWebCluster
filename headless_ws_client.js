@@ -7,7 +7,7 @@ global.config = {
    secret: 'Unknown',
    rpi: 'Unknown'
 };
-if(env[0] && (env[0] == 'G')) {
+if(env[0] && (env[0] == 'Windows')) {
    config = require('D:/inc/rpi_cluster.config');
 } else {
    config = require('/home/pi/inc/rpi_cluster.config');
