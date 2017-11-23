@@ -4,6 +4,8 @@ Test project to compare performance between 8 clustered Raspberry Pi's and a "re
 
 First using the rpi's for testing the web farm at work
 
+Also see D:\Projects\Electronica\RaspBerryPi\SDcards\SD_013.txt
+
 Rpi_008 is the test server. The code is automatically uploaded to the rpi by phpStorm.
 GitHub: git+https://github.com/gjgjwmertens/RpiWebCluster.git\
 
