@@ -14,7 +14,8 @@ if(env[0] && (env[0] == 'Windows')) {
    require('./lib/oled');
 }
 let tstMng = require('./lib/test-manager');
-const ws = new WebSocket('ws://20.0.0.108:3030');
+const ws = new WebSocket('ws://az005.fmg.uva.nl:55556');
+// const ws = new WebSocket('ws://20.0.0.108:3030');
 
 
 ws.on('open', function open() {
