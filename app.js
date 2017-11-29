@@ -8,7 +8,7 @@ global.config = {
    secret: 'Unknown',
    rpi: 'Unknown'
 };
-if(env[0] && (env[0] == 'G')) {
+if(env[0] && (env[0] == 'Windows')) {
    config = require('D:/inc/rpi_cluster.config');
 } else {
    config = require('/home/pi/inc/rpi_cluster.config');
@@ -24,7 +24,7 @@ var reload = require('reload');
 var app = express();
 var cc = require('./lib/cyber-chat');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 55554);
 app.set('view engine', 'ejs');
 app.set('cc', cc);
 

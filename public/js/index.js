@@ -3,7 +3,7 @@
  */
 
 // Basic websocket code
-var ws = new WebSocket('ws://20.0.0.108:3030');
+var ws = new WebSocket('ws://az005.fmg.uva.nl:55556');
 var ws2 = null;
 var wsList = {
    'Rpi_003': 'ws://20.0.0.103:3030',
